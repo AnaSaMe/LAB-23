@@ -1,0 +1,152 @@
+---
+title: "LAB ONE (MD)"
+author: "AnaGSanjuanM"
+date: "2023-02-22"
+output: html_document
+---
+
+Es la estructura de red que AMAZON ocupa para hacer recomendaciones en base a tus compras actuales
+```{r}
+M = as.matrix(
+  read.csv("https://raw.githubusercontent.com/PABalland/ON/master/amz.csv" , 
+           sep = ",", 
+           header = T, 
+           row.names = 1))
+```
+
+Mostrar matriz y conteo de renglones y columnas
+```{r}
+M
+dim(M)
+```
+
+Ver sólo el vector de clientes que compran el producto "corbata" (producto de la columna 1)
+```{r}
+M[1:6, 1]
+```
+
+Ver sólo un fragmento de la base original, en relación a los dos productos que me interesan
+Puede ser útil para explorar clientes y productos
+```{r}
+M[1:6, 1:2]
+```
+
+Computar grado de centralidad
+```{r}
+rowSums (M)
+```
+
+Función útil para enfocarnos en productos y no sólo en clientes
+```{r}
+t(M)
+```
+
+Suma de matrices
+```{r}
+M + M
+```
+
+Crear nuevo un objeto llamado x
+```{r}
+x = M + M
+```
+
+Elevar matriz al cuadrado
+```{r}
+M^2
+```
+
+Multiplicación de matrices idénticas
+```{r}
+M * M
+```
+
+Checar tamaño de la primera matriz -dim-
+Solo si el número de columnas de la primera matriz es igual al número de renglones de la segunda matriz
+```{r}
+dim(M)
+```
+
+Matriz transpuesta. Esta es la segunda matriz
+```{r}
+t(M)
+```
+
+Checar tamaño de la segunda matriz -dim-
+Sí se cumple con la regla de matrices
+```{r}
+dim(t(M))
+```
+
+Multiplicación de matrices después de checar tamaños
+Los signos de porcentaje indican que es una multiplicación de matrices con diferente orden
+```{r}
+M %*% t(M)
+```
+
+Multiplicación inversa con énfasis en los productos
+El algoritmo de recomendación de AMAZON, hace básicamente lo anterior.
+Para tener el número de veces que 2 productos han sido comprados por el mismo cliente
+Identificar productos que van frecuentemente juntos (co ocurrencias par)
+```{r}
+t(M) %*% M
+```
+
+Matriz base para visualizar que las co ocurrencias son reales
+Solo tres clientes (Piere, David y Paula) empataron en la compra del short y agua
+```{r}
+M
+```
+
+Matriz de similaridad de productos (de gustos) matriz de co ocurrencia de productos
+```{r}
+P = t(M) %*% M
+```
+
+Para visualizar la matriz de similaridad de productos
+El "error" de la matriz es que son productos idénticos pero no pueden co ocurrir cuatro veces cada producto
+Debe tener ceros porque se calcula el nivel de atracción
+```{r}
+P
+```
+
+No es una matriz identidad (como en la correlación)
+```{r}
+diag (P) = 0
+```
+
+Es la misma matriz que la anterior pero la diagonal es cero en el mismo producto
+Ahora si es una matriz de co ocurrencias
+```{r}
+P
+```
+
+Similaridad de clientes - matriz de co ocurrencia de clientes
+Invertimos la multiplicación de matrices
+```{r}
+C = M %*% t(M)
+```
+
+Para visualizar la matriz de similaridad de clientes
+El "error" de la matriz es que son clientes idénticos pero no puede co ocurrir seis veces cada cliente
+Debe tener ceros porque se calcula el nivel de atracción
+```{r}
+C
+```
+
+Matriz base para visualizar que las co ocurrencias son reales
+Pierre y Ron empataron en una compra
+```{r}
+M
+```
+
+No es una matriz identidad (como en la correlación) 
+```{r}
+diag (C) = 0
+```
+
+Es la misma matriz que la anterior pero la diagonal es cero en el mismo cliente
+Ahora si es una matriz de co ocurrencias
+```{r}
+C
+```
