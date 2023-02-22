@@ -2,7 +2,9 @@
 title: "LAB ONE (MD)"
 author: "AnaGSanjuanM"
 date: "2023-02-22"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 Es la estructura de red que AMAZON ocupa para hacer recomendaciones en base a tus compras actuales
